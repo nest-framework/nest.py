@@ -47,11 +47,10 @@ async def install_module(directory: Path, module: dict, *, event: Event):
     file_contents = await get_file_contents(session, user=module["author"], name=module["name"],
                                             file_name="nest-config.json")
     if file_contents is None:
-        warn(f"Failed to install module {module['uri']}. Reason: No nest-module.json config.")
+        warn(f"Failed to install module {module['download']['uri']}. Reason: No nest-module.json config.")
         event.set()
         return
     module_config = loads(file_contents)
-
     requirements_text = await get_file_contents(session, module["author"], module["name"], "requirements.txt")
     if requirements_text is None:
         requirements = []
@@ -62,7 +61,6 @@ async def install_module(directory: Path, module: dict, *, event: Event):
              f"Reason: nest.py is not in the requirements.txt file, please add it to the requirements.txt file.")
         event.set()
         return
-
     await create_subprocess_shell(f"{executable} -m pip install {requirements}")
     entry_point = module_config["entrypoint"]
 
@@ -76,3 +74,4 @@ async def install_module(directory: Path, module: dict, *, event: Event):
     with module_file.open("w+") as f:
         module_code = await get_file_contents(session, module["author"], module["name"], entry_point)
         f.write(module_code)
+    event.set()

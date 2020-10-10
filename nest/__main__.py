@@ -10,6 +10,7 @@ from nest.cli.commands.install import install
 import click
 from pathlib import Path
 from asyncio import get_event_loop
+from logging import getLogger, CRITICAL
 
 
 @click.group()
@@ -52,6 +53,7 @@ def install_command(directory):
 
 
 def main():
+    getLogger('asyncio').setLevel(CRITICAL)
     cli()
 
 
