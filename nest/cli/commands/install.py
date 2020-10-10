@@ -45,7 +45,7 @@ async def install(directory: Path):
 
 async def install_module(directory: Path, module: dict, *, event: Event):
     file_contents = await get_file_contents(session, user=module["author"], name=module["name"],
-                                            file_name="nest-config.json")
+                                            file_name="nest-module.json")
     if file_contents is None:
         warn(f"Failed to install module {module['download']['uri']}. Reason: No nest-module.json config.")
         event.set()
