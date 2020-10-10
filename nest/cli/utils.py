@@ -62,6 +62,7 @@ def get_uri_data(uri: str):
     name = groups[2]
 
     return {
+        "uri": uri,
         "name": name,
         "author": author,
         "version": version,
