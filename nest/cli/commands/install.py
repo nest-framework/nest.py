@@ -55,13 +55,13 @@ async def install_module(directory: Path, module: dict, *, event: Event):
     if requirements_text is None:
         requirements = []
     else:
-        requirements = requirements_text.replace("\n", " ")
+        requirements = requirements_text.split("\n")
     if not any([requirement.lower().startswith("nest.py") for requirement in requirements]):
         warn(f"Failed to install module {module['download']['uri']}. "
              f"Reason: nest.py is not in the requirements.txt file, please add it to the requirements.txt file.")
         event.set()
         return
-    await create_subprocess_shell(f"{executable} -m pip install {requirements}")
+    await create_subprocess_shell(f"{executable} -m pip install {' '.join(requirements)}")
     entry_point = module_config["entrypoint"]
 
     module_folder = directory / "nest_modules"
