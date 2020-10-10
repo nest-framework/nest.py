@@ -5,6 +5,7 @@ Created by Epic at 10/9/20
 from nest.cli.commands.init import init
 from nest.cli.commands.add import add_dependencies
 from nest.cli.commands.setup_workspace import setup_workspace
+from nest.cli.commands.install import install
 
 import click
 from pathlib import Path
@@ -41,6 +42,13 @@ def add_command(package, directory):
 @click.option("--version", default="1.0.0", prompt="Version")
 def setup_workspace_command(directory, version):
     setup_workspace(Path(directory), version)
+
+
+@cli.command(name="install")
+@click.option("--directory", default=".")
+def install_command(directory):
+    loop = get_event_loop()
+    loop.run_until_complete(install(Path(directory)))
 
 
 def main():
