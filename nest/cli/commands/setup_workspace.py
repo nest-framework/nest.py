@@ -21,7 +21,7 @@ def setup(bot, command_handler):
 
 
 def setup_workspace(directory: Path, version: str):
-    nest_module_config = directory / "nest_module.json"
+    nest_module_config = directory / "nest-module.json"
     requirements = directory / "requirements.txt"
     module_script = directory / "module.py"
 
