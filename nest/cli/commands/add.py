@@ -71,7 +71,7 @@ async def add_package(uri: str, *, is_dependency=False, event: Event = None):
         if requirements_text is None:
             requirements = []
         else:
-            requirements = loads(requirements_text)
+            requirements = requirements_text.split("\n")
         if not any([requirement.lower().startswith("nest.py") for requirement in requirements]):
             warn(f"Failed to add module {uri}. "
                  f"Reason: nest.py is not in the requirements.txt file, please add it to the requirements.txt file.")
