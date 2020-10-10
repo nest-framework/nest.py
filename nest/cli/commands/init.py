@@ -28,6 +28,10 @@ def init(directory: Path, *, name: str, version: str, token: str):
         }
         dump(nest_project, f, indent=4)
     with nest_config_file.open("w+") as f:
-        nest_config = {}
+        nest_config = {
+            "token": token
+        }
         dump(nest_config, f, indent=4)
     nest_modules_folder.mkdir()
+
+
