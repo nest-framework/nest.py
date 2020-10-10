@@ -54,7 +54,6 @@ async def add_dependencies(*uris, **kwargs):
 
 
 async def add_package(uri: str, *, is_dependency=False, event: Event = None):
-    print(uri)
     uri_data = get_uri_data(uri)
 
     if uri_data["download_type"] == "github":
