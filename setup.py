@@ -10,5 +10,15 @@ setup(
     url='https://github.com/nest-framework',
     license='MIT',
     author='Epic',
-    description='A simple discord bot framework using speedcord'
+    description='A simple discord bot framework using speedcord',
+    install_requires=[
+        "speedcord",
+        "click",
+        "ujson"
+    ],
+    entry_points={
+        "console_scripts": [
+            "nest=nest.__main__:main"
+        ]
+    }
 )
