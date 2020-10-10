@@ -28,7 +28,8 @@ def setup_workspace(directory: Path, version: str):
     with nest_module_config.open("w+") as f:
         module_config = {
             "entrypoint": "module.py",
-            "version": version
+            "version": version,
+            "dependencies": []
         }
         dump(module_config, f, indent=4)
 
