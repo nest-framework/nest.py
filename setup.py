@@ -14,7 +14,9 @@ setup(
     install_requires=[
         "speedcord",
         "click",
-        "ujson"
+        "ujson",
+        "aiohttp",
+        "tqdm"
     ],
     entry_points={
         "console_scripts": [
