@@ -30,7 +30,7 @@ def setup_workspace(directory: Path, version: str):
             "entrypoint": "module.py",
             "version": version
         }
-        dump(module_config, f, indents=4)
+        dump(module_config, f, indent=4)
 
     with requirements.open("w+") as f:
         f.write("nest.py\nspeedcord")

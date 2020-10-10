@@ -47,7 +47,7 @@ async def add_dependencies(*uris, **kwargs):
 
     project["modules"] = packages
     with nest_config_file.open("w") as f:
-        dump(project, f, indents=4)
+        dump(project, f, indent=4)
 
     clear_logs()
     write_lock.release()
