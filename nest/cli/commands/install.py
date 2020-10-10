@@ -10,6 +10,7 @@ from ujson import loads, load
 from aiohttp import ClientSession
 from asyncio import Event, create_subprocess_shell, Lock, get_event_loop
 from sys import executable
+from os import devnull
 
 session = ClientSession()
 session.headers = {
@@ -19,7 +20,7 @@ session.headers = {
 write_lock = Lock()
 
 
-async def install(directory: Path):
+async def install(directory: Path, exit_after=True):
     nest_config_file = directory / "nest.json"
 
     if not is_there_a_project_here(directory):
@@ -41,6 +42,8 @@ async def install(directory: Path):
 
     clear_logs()
     write_lock.release()
+    if exit_after:
+        exit()
 
 
 async def install_module(directory: Path, module: dict, *, event: Event):
@@ -61,16 +64,21 @@ async def install_module(directory: Path, module: dict, *, event: Event):
              f"Reason: nest.py is not in the requirements.txt file, please add it to the requirements.txt file.")
         event.set()
         return
-    await create_subprocess_shell(f"{executable} -m pip install {' '.join(requirements)}")
+    command = f"{executable} -m pip install {' '.join(requirements)}"
+    dnull = open(devnull, "w")
+    process = await create_subprocess_shell(command, stdout=dnull)
+    dnull.close()
+    await process.wait()
     entry_point = module_config["entrypoint"]
 
     module_folder = directory / "nest_modules"
+    if not module_folder.is_dir():
+        module_folder.mkdir()
     author_folder = module_folder / module["author"]
-    module_file = author_folder / module["name"]
-
     if not author_folder.is_dir():
         author_folder.mkdir()
 
+    module_file = author_folder / Path(module["name"] + ".py")
     with module_file.open("w+") as f:
         module_code = await get_file_contents(session, module["author"], module["name"], entry_point)
         f.write(module_code)
