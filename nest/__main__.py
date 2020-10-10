@@ -8,10 +8,7 @@ from nest.cli.commands.setup_workspace import setup_workspace
 
 import click
 from pathlib import Path
-import re
 from asyncio import get_event_loop
-
-regex = re.compile("(\w+@)?(\w+)/(\w+)(:\d+.\d+.\d+)?")
 
 
 @click.group()
