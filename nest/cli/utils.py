@@ -70,7 +70,7 @@ def get_uri_data(uri: str):
 
 
 async def get_file_contents(session: ClientSession, user, name, file_name):
-    request = await session.get(f"https://api.github.com/repos/{user}/{name}/master/{file_name}")
+    request = await session.get(f"https://raw.githubusercontent.com/{user}/{name}/master/{file_name}")
     try:
         request.raise_for_status()
     except:
