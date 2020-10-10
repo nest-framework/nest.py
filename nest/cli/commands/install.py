@@ -57,7 +57,7 @@ async def install_module(directory: Path, module: dict, *, event: Event):
     else:
         requirements = requirements_text.replace("\n", " ")
     if not any([requirement.lower().startswith("nest.py") for requirement in requirements]):
-        warn(f"Failed to install module {module['uri']}. "
+        warn(f"Failed to install module {module['download']['uri']}. "
              f"Reason: nest.py is not in the requirements.txt file, please add it to the requirements.txt file.")
         event.set()
         return
