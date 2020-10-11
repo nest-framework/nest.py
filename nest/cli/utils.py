@@ -10,7 +10,7 @@ from typing import Optional
 from re import compile
 from colorama import init, Fore, Style
 
-regex = compile("(\w+@)?([A-z0-9-_]+)/([A-z0-9-_]+)(:\d+.\d+.\d+)?")
+regex = compile("(\w+@)?([A-z0-9-_]+)/([A-z0-9-_]+)(:\w+)?")
 init()
 log_queue = []
 
