@@ -53,7 +53,7 @@ def install_command(directory):
 
 
 def main():
-    getLogger('asyncio').setLevel(CRITICAL)
+    #getLogger('asyncio').setLevel(CRITICAL)
     cli()
 
 
