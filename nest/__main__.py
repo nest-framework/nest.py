@@ -10,7 +10,6 @@ from nest.cli.commands.install import install
 import click
 from pathlib import Path
 from asyncio import get_event_loop
-from warnings import simplefilter
 
 
 @click.group()
@@ -53,7 +52,6 @@ def install_command(directory):
 
 
 def main():
-    simplefilter("ignore")
     cli()
 
 
