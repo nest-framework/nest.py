@@ -70,13 +70,17 @@ def get_uri_data(uri: str):
     }
 
 
-async def get_file_contents(session: ClientSession, user, name, file_name):
-    request = await session.get(f"https://raw.githubusercontent.com/{user}/{name}/master/{file_name}")
-    try:
-        request.raise_for_status()
-    except:
-        return None
-    return await request.text()
+async def get_file_contents(user, name, file_name):
+    async with ClientSession() as session:
+        session.headers = {
+            "User-Agent": "Nest.py (https://github.com/nest-framework/nest.py)"
+        }
+        request = await session.get(f"https://raw.githubusercontent.com/{user}/{name}/master/{file_name}")
+        try:
+            request.raise_for_status()
+        except:
+            return None
+        return await request.text()
 
 
 def warn(text):

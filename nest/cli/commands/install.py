@@ -7,15 +7,9 @@ from nest.cli.exceptions import NoProjectFound
 from pathlib import Path
 from tqdm import tqdm
 from ujson import loads, load
-from aiohttp import ClientSession
 from asyncio import Event, create_subprocess_shell, Lock, get_event_loop
 from sys import executable
 from os import devnull
-
-session = ClientSession()
-session.headers = {
-    "User-Agent": "Nest.py (https://github.com/nest-framework/nest.py)"
-}
 
 write_lock = Lock()
 
@@ -47,14 +41,14 @@ async def install(directory: Path, exit_after=True):
 
 
 async def install_module(directory: Path, module: dict, *, event: Event):
-    file_contents = await get_file_contents(session, user=module["author"], name=module["name"],
+    file_contents = await get_file_contents(user=module["author"], name=module["name"],
                                             file_name="nest-module.json")
     if file_contents is None:
         warn(f"Failed to install module {module['download']['uri']}. Reason: No nest-module.json config.")
         event.set()
         return
     module_config = loads(file_contents)
-    requirements_text = await get_file_contents(session, module["author"], module["name"], "requirements.txt")
+    requirements_text = await get_file_contents(module["author"], module["name"], "requirements.txt")
     if requirements_text is None:
         requirements = []
     else:
@@ -80,6 +74,6 @@ async def install_module(directory: Path, module: dict, *, event: Event):
 
     module_file = author_folder / Path(module["name"] + ".py")
     with module_file.open("w+") as f:
-        module_code = await get_file_contents(session, module["author"], module["name"], entry_point)
+        module_code = await get_file_contents(module["author"], module["name"], entry_point)
         f.write(module_code)
     event.set()

@@ -1,20 +1,13 @@
 """
 Created by Epic at 10/10/20
 """
-from nest.cli.utils import is_there_a_project_here, is_module_already_added, get_uri_data, get_file_contents, warn, \
-    clear_logs
-from nest.cli.exceptions import NoProjectFound, ModuleAlreadyAdded
+from nest.cli.utils import is_there_a_project_here, get_uri_data, get_file_contents, warn, clear_logs
+from nest.cli.exceptions import NoProjectFound
 
 from pathlib import Path
 from ujson import load, dump, loads
-from aiohttp import ClientSession
 from asyncio import Lock, get_event_loop, Event
 from tqdm import tqdm
-
-session = ClientSession()
-session.headers = {
-    "User-Agent": "Nest.py (https://github.com/nest-framework/nest.py)"
-}
 
 write_lock = Lock()
 add_package_lock = Lock()
@@ -57,7 +50,7 @@ async def add_package(uri: str, *, is_dependency=False, event: Event = None):
     uri_data = get_uri_data(uri)
 
     if uri_data["download_type"] == "github":
-        module_config_text = await get_file_contents(session, uri_data["author"], uri_data["name"], "nest-module.json")
+        module_config_text = await get_file_contents(uri_data["author"], uri_data["name"], "nest-module.json")
         if module_config_text is None:
             warn(f"Failed to add module {uri}. Reason: No nest-module.json config.")
             if event:
@@ -66,7 +59,7 @@ async def add_package(uri: str, *, is_dependency=False, event: Event = None):
         module_config = loads(module_config_text)
         dependencies = module_config["dependencies"]
 
-        requirements_text = await get_file_contents(session, uri_data["author"], uri_data["name"], "requirements.txt")
+        requirements_text = await get_file_contents(uri_data["author"], uri_data["name"], "requirements.txt")
         if requirements_text is None:
             requirements = []
         else:
